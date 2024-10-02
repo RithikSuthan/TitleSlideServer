@@ -2,6 +2,8 @@ package com.TileSlide.TileSlideService.Services;
 
 import com.TileSlide.TileSlideService.Models.Player;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,32 @@ public class PlayerService {
     public ResponseEntity<?> addPlayer(Player player)
     {
         System.out.println(player);
-        return ResponseEntity.status(HttpStatus.OK).body("Data Came");
+        String message="";
+        if(player.getUserName()=="" || player.getEmail()=="" ||player.getPassword()=="")
+        {
+            message="Any of the Fields is empty";
+        }
+        else
+        {
+            mongoTemplate.save(player);
+            message="Player added successfully";
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
+    public ResponseEntity<?> existEmail(String email)
+    {
+        String message="";
+        Query query=new Query(Criteria.where("email").is(email));
+        Player existPlayer=mongoTemplate.findOne(query,Player.class);
+        if(existPlayer!=null)
+        {
+            message="Email exists already";
+        }
+        else
+        {
+            message="User doesn't exist";
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }

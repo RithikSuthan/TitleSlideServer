@@ -19,4 +19,10 @@ public class PlayerController {
         return playerService.addPlayer(player);
     }
 
+    @GetMapping("/existEmail")
+    public ResponseEntity<?> exsitEmail(@RequestParam String email)
+    {
+        return playerService.existEmail(email);
+    }
+
 }
