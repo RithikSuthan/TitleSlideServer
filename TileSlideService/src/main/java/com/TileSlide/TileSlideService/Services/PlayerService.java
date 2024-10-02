@@ -50,4 +50,19 @@ public class PlayerService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
+    public ResponseEntity<?> existUserName(String userName)
+    {
+        String message="";
+        Query query=new Query(Criteria.where("userName").is(userName));
+        Player exist=mongoTemplate.findOne(query,Player.class);
+        if(exist!=null)
+        {
+            message="User Name Already Taken";
+        }
+        else
+        {
+            message="User Name Can be used";
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }

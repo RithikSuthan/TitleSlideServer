@@ -25,4 +25,10 @@ public class PlayerController {
         return playerService.existEmail(email);
     }
 
+    @GetMapping("/existuserName")
+    public ResponseEntity<?> existUserName(@RequestParam String userName)
+    {
+        return playerService.existUserName(userName);
+    }
+
 }
