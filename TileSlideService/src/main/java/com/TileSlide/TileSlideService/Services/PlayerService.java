@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class PlayerService {
     private MongoTemplate mongoTemplate;
@@ -48,7 +51,9 @@ public class PlayerService {
         {
             message="User doesn't exist";
         }
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+        Map<String,String> response=new HashMap<>();
+        response.put("message",message);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     public ResponseEntity<?> existUserName(String userName)
     {
@@ -62,6 +67,24 @@ public class PlayerService {
         else
         {
             message="User Name Can be used";
+        }
+        Map<String,String> response =new HashMap<>();
+        response.put("message",message);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    public ResponseEntity<?> loginEmployee(Player player)
+    {
+        String message="";
+        Query query=new Query(Criteria.where("email").is(player.getEmail()).and("password").is(player.getPassword()));
+        Player exist=mongoTemplate.findOne(query,Player.class);
+        if(exist!=null)
+        {
+            message="Login Successful";
+        }
+        else
+        {
+            message="User doesn't exist";
         }
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }

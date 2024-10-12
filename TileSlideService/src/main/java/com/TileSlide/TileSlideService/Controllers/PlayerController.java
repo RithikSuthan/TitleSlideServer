@@ -31,4 +31,9 @@ public class PlayerController {
         return playerService.existUserName(userName);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Player player)
+    {
+        return playerService.loginEmployee(player);
+    }
 }
