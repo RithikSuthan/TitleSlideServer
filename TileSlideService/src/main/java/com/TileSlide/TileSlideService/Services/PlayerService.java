@@ -35,7 +35,9 @@ public class PlayerService {
             mongoTemplate.save(player);
             message="Player added successfully";
         }
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+        Map<String,String> response=new HashMap<>();
+        response.put("message",message);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     public ResponseEntity<?> existEmail(String email)
@@ -86,6 +88,9 @@ public class PlayerService {
         {
             message="User doesn't exist";
         }
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+        Map<String,String> response=new HashMap<>();
+        response.put("message",message);
+        response.put("email",player.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
