@@ -4,6 +4,7 @@ import com.TileSlide.TileSlideService.Models.Player;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ public class PlayerService {
         }
         else
         {
+            player.setHighScore(0);
             mongoTemplate.save(player);
             message="Player added successfully";
         }
@@ -92,5 +94,29 @@ public class PlayerService {
         response.put("message",message);
         response.put("email",player.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    public ResponseEntity<?> updateScore(String email,int score)
+    {
+        String message="";
+        Query query=new Query(Criteria.where("email").is(email));
+        Update update=new Update().set("highScore",score);
+        Player updatedPlayer=mongoTemplate.findAndModify(query,update,Player.class);
+        Map<String,String> response=new HashMap<>();
+        if(updatedPlayer!=null)
+        {
+            message="Player score updated Successfully";
+        }
+        else
+        {
+            message="Player not found";
+        }
+        response.put("message",message);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    public ResponseEntity<?> fetchPlayer(String email)
+    {
+        Query query=new Query(Criteria.where("email").is(email));
+        Player exist=mongoTemplate.findOne(query,Player.class);
+        return ResponseEntity.status(HttpStatus.OK).body(exist);
     }
 }

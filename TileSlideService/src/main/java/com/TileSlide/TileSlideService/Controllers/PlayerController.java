@@ -36,4 +36,15 @@ public class PlayerController {
     {
         return playerService.loginEmployee(player);
     }
+    @PutMapping("/updatescore")
+    public ResponseEntity<?> updateScore(@RequestParam String email,@RequestParam int score)
+    {
+        return playerService.updateScore(email,score);
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<?> fetchPlayer(@RequestParam String email)
+    {
+        return playerService.fetchPlayer(email);
+    }
 }

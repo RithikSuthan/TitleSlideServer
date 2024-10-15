@@ -9,5 +9,6 @@ public class Player {
     private String userName;
     private String email;
     private String password;
+    private int highScore;
 }
 
